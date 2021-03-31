@@ -67,8 +67,8 @@ helm upgrade jupyter --install ./jupyter \
     --set proxy.secretSync.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-k8s-secret-sync \
     --set proxy.chp.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-configurable-http-proxy \
     --set proxy.traefik.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-traefik \
-    --set scheduling.userScheduler.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-kube-scheduler
-
+    --set scheduling.userScheduler.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-kube-scheduler \
+    --wait --timeout 10m
 
 # install spark-history
 helm install spark-history-server ./spark-history-server \

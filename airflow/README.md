@@ -4,57 +4,11 @@ Airflow is a platform to programmatically author, schedule, and monitor workflow
 
 ## Install Airflow
 
-Two ways to install Airflow: execute ``sh install_all.sh`` in engineplus-helm-charts dir or install Airflow separately by using following commands.
+Two ways to install Airflow: execute ``sh install_all.sh`` in  parent directory **or** install separately by using following steps.
 
-1. ``Prepare env``. Before install Airflow, ensure the ['Prepare ENV Vars'](../README.md) has been declared. You can refer to the README of engineplus-helm-charts.
-
-Here is copy from the README of engineplus-helm-charts.
-```bash
-# Public variables for all components 
-# Please use your own values
-export ENGINEPLUS_REPO_PREFIX="SUBSCRIBE_IMAGE_URL"
-export ENGINEPLUS_INGRESS_HOST=example.com
-export ENGINEPLUS_S3_PREFIX=s3://xxxxx/engineplus
-export ENGINEPLUS_ROLE_ARN=arn:aws:iam::ACCOUNT-NUMBER:role/IAM-ROLE-NAME
-export ENGINEPLUS_SPARK_SERVICEACCOUNT=spark
-export ENGINEPLUS_REPO_TAG=engineplus-2.0.1
-export ENGINEPLUS_NAMESPACE=engineplus
-export ENGINEPLUS_INGRESS_ENABLED=true
-# generate random password to login zeppelin/airflow/jupyter/spark-history-server/spark ui 
-# default login user is admin 
-export ENGINEPLUS_PASSWORD="YOUR_ADMIN_PASSWORD"
-# Required variables For Airflow && Jupyter. If you forget it, you can get it in airflow-env of Config Maps in kube-dashboard by typing "AIRFLOW__REST_API_PLUGIN__REST_API_PLUGIN_EXPECTED_HTTP_TOKEN"
-export ENGINEPLUS_AIRFLOW_REST_TOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
-export ENGINEPLUS_JUPYTER_PROXY_SECRETTOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
-```
-
-
-2. RDS Mysql database should be already created. [how to create a RDS](https://aws.amazon.com/rds/?nc1=h_ls)
-```bash
-# connect to your RDS Mysql and type the password
-mysql -h mysql_host -u mysql_user_name -p
-
-# then create a new database
-CREATE DATABASE engineplus_airflow
-
-# Export RDS Mysql envs
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_HOST=mysql_host
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PORT=mysql_port
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_USER=mysql_user_name
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PASSWORD=mysql_user_password
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_DATEBASE=engineplus_airflow
-
-```
-
-3. Set TimeZone
-```bash
-# example: "America/New_York"
-export ENGINEPLUS_AIRFLOW_TIMEZONE="UTC"
-
-```
-
-
-Install the Airflow Chart by running this command.
+1. RDS Mysql database should be already created. Click this [how to create a RDS](https://aws.amazon.com/rds/?nc1=h_ls).
+2. **Prepare ENV Vars**. Before installation, envs should be declared from parent directory, refer to [Prepare ENV Vars](../README.md).
+3. Execute the install following command.
 
 ```bash
 helm install airflow \
@@ -92,8 +46,7 @@ helm uninstall airflow -n ${ENGINEPLUS_NAMESPACE}
 
 ## Upgrade Airflow
 
-Before upgrade Airflow Release, it also needed to ``Prepare env``.
-Then execute the following command. 
+ Before install Jupyter, ensure the ['Prepare ENV Vars'](../README.md) from parent directory has been declared.
 
 ```bash
 helm upgrade airflow ./airflow/charts \
