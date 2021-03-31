@@ -22,9 +22,9 @@ This project provides installation method for every component of EnginePlus 2.0 
 
 ## Prerequisites
 1. A Kubernetes cluster. [AWS EKS](https://aws.amazon.com/eks/) has been throughly tested and therefore recommended. Kubenetes version 1.18 or above is required.
-1. Container images of the components you need to install. We recommend [EnginePlus 2.0 Container Product on AWS Marketplace](aws-market-place-link) which includes all the component images. These prebuilt images have all the dependencies and execution environment inside, and help you handle the interaction with EKS, create necessary config maps and include many bug fixes for the opensource projects. Please make sure that you have the [right to subscribe the product](https://docs.aws.amazon.com/marketplace/latest/buyerguide/buyer-finding-and-subscribing-to-container-products.html).
+1. Container images of the components you need to install. The prebuilt [EnginePlus 2.0 Container Product on AWS Marketplace](aws-market-place-link) which includes all the component images is recommended. These prebuilt images have all the dependencies and execution environment inside, and help you handle the interaction with EKS, create necessary config maps and include many bug fixes for the opensource projects. Please make sure that you have the [right to subscribe the product](https://docs.aws.amazon.com/marketplace/latest/buyerguide/buyer-finding-and-subscribing-to-container-products.html).
 
-## Prepare Your K8s Cluster
+## Prepare Your K8s(EKS) Cluster
 1. Spark on K8s requires two extra node groups with node labels: `spark-applications-driver-nodes` and `spark-applications-nodes`. If you are using AWS EKS, you could use [eksctl](https://eksctl.io/) to create them following the steps: [create eks node groups](aws-eks-nodegroups).
 
 1. Prepare a S3 bucket or a prefix of an existing S3 bucket.
@@ -62,11 +62,11 @@ In this tutorial we will prepare an IAM role with an ID provider.
     You need provide: 
 
     - YOUR_BUCKET_NAME
-    - YOUR_HOST_ZONE_ID(If you need External-DNS)
+    - YOUR_HOST_ZONE_ID (If you need External-DNS)
 
   - Edit IAM role Trust RelationShip policy, to trust the EKS OIDC Provider we create.
 
-    You need provide:
+    You need to provide:
     - ACCOUNT_NUMBER
 
       `your aws account id`
@@ -90,7 +90,7 @@ In this tutorial we will prepare an IAM role with an ID provider.
    
   Then you can add IAM policy as follows :
 
-  **Notice: Please replace all of the uppercase words(including <>)**
+  **Notice: Please replace all of the placeholders with correct values**
 
   ```json
   {
@@ -99,7 +99,7 @@ In this tutorial we will prepare an IAM role with an ID provider.
           {
               "Effect": "Allow",
               "Action": "s3:*",
-              "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+              "Resource": "arn:aws:s3:::<YOUR_BUCKET_NAME>/*"
           },
           {
               "Action": [
@@ -114,7 +114,7 @@ In this tutorial we will prepare an IAM role with an ID provider.
                   "route53:ChangeResourceRecordSets"
               ],
               "Resource": [
-                  "arn:aws:route53:::hostedzone/YOUR_HOST_ZONE_ID"
+                  "arn:aws:route53:::hostedzone/<YOUR_HOST_ZONE_ID>"
               ]
           },
           {
@@ -131,7 +131,7 @@ In this tutorial we will prepare an IAM role with an ID provider.
   }
   ```
 
-After you added new IAM policy, we need to add IAM Trust RelationShip of engineplus:spark (namespace:serviceaccount).
+After new IAM policy added, IAM Trust RelationShip of engineplus:spark (namespace:serviceaccount) needs to be configured as the following example.
 
 ```json
 {
@@ -162,35 +162,35 @@ After you added new IAM policy, we need to add IAM Trust RelationShip of enginep
 
 ## Deploy EnginePlus Components
 
-You can choose to install optional components by our charts before install required Components. And you only need to execute [install_all.sh](install_all.sh) to install the required components.
+You can choose to [install optional](#optional-components) components by our charts before installing required Components. And you only need to execute [install_all.sh](install_all.sh) to install all the required components.
 
 ### 1. Prepare environment variables
 
- Before install required components, a set of environment variables need to be defined. Replace place holders with appropriate values obtained from the above preparation steps.
+Before installing required components, a set of environment variables need to be defined. Replace place holders with appropriate values obtained from the above preparation steps.
 
 ```bash
 # Public variables for all components 
-# Please use your own values
-ENGINEPLUS_REPO_PREFIX="SUBSCRIBE_IMAGE_URL"
-ENGINEPLUS_INGRESS_HOST=example.com
-ENGINEPLUS_S3_PREFIX=s3://xxxxx/engineplus
-ENGINEPLUS_ROLE_ARN=arn:aws:iam::ACCOUNT-NUMBER:role/IAM-ROLE-NAME
+# Please use your own values to replace the placeholders
+ENGINEPLUS_REPO_PREFIX="<SUBSCRIBED_IMAGE_REPO_URL>"
+ENGINEPLUS_INGRESS_HOST=<example.com>
+ENGINEPLUS_S3_PREFIX=s3://<xxxxx>/engineplus
+ENGINEPLUS_ROLE_ARN=arn:aws:iam::<ACCOUNT-NUMBER>:role/<IAM-ROLE-NAME>
 
 ENGINEPLUS_SPARK_SERVICEACCOUNT=spark
 ENGINEPLUS_REPO_TAG=engineplus-2.0.1
 ENGINEPLUS_NAMESPACE=engineplus
 ENGINEPLUS_INGRESS_ENABLED=true
 # generate random password to login zeppelin/airflow/jupyter/spark-history-server/spark ui 
-# default login user is admin 
+# default login user name is 'admin'
 ENGINEPLUS_PASSWORD=`cat /dev/urandom | head -n 10 | md5sum | head -c 16`
 # Required variables For Airflow && Jupyter. If you forget it, you can get it in airflow-env of Config Maps in kube-dashboard by typing "AIRFLOW__REST_API_PLUGIN__REST_API_PLUGIN_EXPECTED_HTTP_TOKEN"
 ENGINEPLUS_AIRFLOW_REST_TOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
 ENGINEPLUS_JUPYTER_PROXY_SECRETTOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
-ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_HOST=""
-ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PORT=""
-ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_USER=""
-ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PASSWORD=""
-ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_DATEBASE=""
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_HOST="<MySQL/RDS endpoint>"
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PORT="<MySQL port>"
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_USER="<MySQL user name>"
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PASSWORD="<MySQL password>"
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_DATEBASE="<MySQL database for Airflow>"
 ```
 
 ### 2. Execute Engineplus Install Shell
@@ -221,13 +221,13 @@ strongly recommend you can install ingress-nginx and external-dns in your EKS cl
 1. [Install Jupyter](jupyter)
 1. [Install Airflow](airflow)
 
-> Note:  We will installed these compoents in enginelus namespace by default.
+> Note: All compoents will be installed in enginelus namespace by default.
 
 
 ## Contact us for support
 
 Feel free to open issue or send PR.
 
-[EnginePlus Team Support Mail Group](engineplus-team@mobvista.com)
+[EnginePlus Team Support Mail Group](mailto:engineplus-team@mobvista.com)
 
 [![Gitter](https://badges.gitter.im/EnginePlusStack/community.svg)](https://gitter.im/EnginePlusStack/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
