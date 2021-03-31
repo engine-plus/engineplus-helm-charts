@@ -160,32 +160,13 @@ After you added new IAM policy, we need to add IAM Trust RelationShip of enginep
 }
 ```
 
-## Depoly EnginePlus Components
+## Deploy EnginePlus Components
 
-You can choose to install optional components by our charts before install required Components. And
-you only need to execute [install_all.sh](install_all.sh) to install the required components.
+You can choose to install optional components by our charts before install required Components. And you only need to execute [install_all.sh](install_all.sh) to install the required components.
 
-#### Optional Components
+### 1. Prepare environment variables
 
-1. [Install Nginx Ingress Controller](ingress-nginx)
-1. [Install External DNS](external-dns)
-1. [Install loki && Promtail](loki)
-1. [Install Prometheus && Grafana](kube-prometheus-stack)
-> Note:  When your EKS cluster has installed the optional components, you can igore this step, and we
-strongly recommend you can install ingress-nginx and external-dns in your EKS cluster before deploy Engineplus.
-
-#### Required Components
-
-1. [Install Spark History Server](spark-history-server)
-1. [Install Zeppelin](zeppelin)
-1. [Install Jupyter](jupyter)
-1. [Install Airflow](airflow)
-
-> Note:  We will installed these compoents in enginelus namespace by default.
-
-### 1. Prepare ENV Vars
-
- Before install required components, we must define a set of environment variables in [install_all.sh](install_all.sh).
+ Before install required components, a set of environment variables need to be defined. Replace place holders with appropriate values obtained from the above preparation steps.
 
 ```bash
 # Public variables for all components 
@@ -214,8 +195,39 @@ ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_DATEBASE=""
 
 ### 2. Execute Engineplus Install Shell
 
-```console
+```shell
 sh ./install_all.sh
 ```
 
-Then, the script will print ingress address for each component.
+This script would install all required components under default settings. This script will print ingress address for each component and admin password after finished.
+
+### Customization
+
+If you would like to customize the compoments, please refer to the compoment docs.
+
+#### Optional Components
+
+1. [Install Nginx Ingress Controller](ingress-nginx)
+1. [Install External DNS](external-dns)
+1. [Install loki && Promtail](loki)
+1. [Install Prometheus && Grafana](kube-prometheus-stack)
+> Note:  When your EKS cluster has installed the optional components, you can igore this step, and we
+strongly recommend you can install ingress-nginx and external-dns in your EKS cluster before deploy Engineplus.
+
+#### Required Components
+
+1. [Install Spark History Server](spark-history-server)
+1. [Install Zeppelin](zeppelin)
+1. [Install Jupyter](jupyter)
+1. [Install Airflow](airflow)
+
+> Note:  We will installed these compoents in enginelus namespace by default.
+
+
+## Contact us for support
+
+Feel free to open issue or send PR.
+
+[EnginePlus Team Support Mail Group](engineplus-team@mobvista.com)
+
+[![Gitter](https://badges.gitter.im/EnginePlusStack/community.svg)](https://gitter.im/EnginePlusStack/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
