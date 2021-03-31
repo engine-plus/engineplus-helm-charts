@@ -34,7 +34,7 @@ This project provides installation method for every component of EnginePlus 2.0 
 
 In this tutorial we will prepare an IAM role with an ID provider.
 
-> EnginePlus needs permissions on S3, Route53(Optional), Marketplace in EKS pods, thus, we need to use an identity provider in AWS IAM service. An identity provider allows an external user to assume roles in your AWS account by setting up a trust relationship. 
+> EnginePlus needs permissions on S3, Route53(Optional) and Marketplace in EKS pods, thus, we need to use an identity provider in AWS IAM service. An identity provider allows an external user to assume roles in your AWS account by setting up a trust relationship. 
 
   ### 1. Create EKS Cluster OIDC Provider
   Before the step 1, please refer to [Create an IAM OIDC provider for your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html).
@@ -90,19 +90,17 @@ In this tutorial we will prepare an IAM role with an ID provider.
    
   Then you can add IAM policy as follows :
 
-  **Notice: Please delete comments when using these json, and replace all of the uppercase words(including <>)**
+  **Notice: Please replace all of the uppercase words(including <>)**
 
   ```json
   {
       "Version": "2012-10-17",
       "Statement": [
-        //[Required Policy] s3, please replace YOUR_BUCKET_NAME
           {
               "Effect": "Allow",
               "Action": "s3:*",
               "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*"
           },
-        //[Required Policy] aws-marketplace
           {
               "Action": [
                   "aws-marketplace:MeterUsage"
@@ -110,7 +108,6 @@ In this tutorial we will prepare an IAM role with an ID provider.
               "Effect": "Allow",
               "Resource": "*"
           },
-          //[Optional Policy] If you need update ingress route records by external dns, you need add the followling policy, please replace YOUR_HOST_ZONE_ID
           {
               "Effect": "Allow",
               "Action": [
@@ -133,13 +130,13 @@ In this tutorial we will prepare an IAM role with an ID provider.
       ]
   }
   ```
-After you added these IAM policy, we need edit trust relationship of IAM role:
+
+After you added new IAM policy, we need to add IAM Trust RelationShip of engineplus:spark (namespace:serviceaccount).
 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
-    //The original policy , please hold this
     {
       "Effect": "Allow",
       "Principal": {
@@ -147,7 +144,6 @@ After you added these IAM policy, we need edit trust relationship of IAM role:
       },
       "Action": "sts:AssumeRole"
     },
-    //Add IAM Trust RelationShip of engineplus:spark (namespace:serviceaccount) 
     {
       "Effect": "Allow",
       "Principal": {
@@ -189,31 +185,31 @@ strongly recommend you can install ingress-nginx and external-dns in your EKS cl
 
 ### 1. Prepare ENV Vars
 
- Before install components, we must define a set of environment variables in [install_all.sh](install.sh).
+ Before install required components, we must define a set of environment variables in [install_all.sh](install_all.sh).
 
 ```bash
 # Public variables for all components 
 # Please use your own values
-export ENGINEPLUS_REPO_PREFIX="SUBSCRIBE_IMAGE_URL"
-export ENGINEPLUS_INGRESS_HOST=example.com
-export ENGINEPLUS_S3_PREFIX=s3://xxxxx/engineplus
-export ENGINEPLUS_ROLE_ARN=arn:aws:iam::ACCOUNT-NUMBER:role/IAM-ROLE-NAME
+ENGINEPLUS_REPO_PREFIX="SUBSCRIBE_IMAGE_URL"
+ENGINEPLUS_INGRESS_HOST=example.com
+ENGINEPLUS_S3_PREFIX=s3://xxxxx/engineplus
+ENGINEPLUS_ROLE_ARN=arn:aws:iam::ACCOUNT-NUMBER:role/IAM-ROLE-NAME
 
-export ENGINEPLUS_SPARK_SERVICEACCOUNT=spark
-export ENGINEPLUS_REPO_TAG=engineplus-2.0.1
-export ENGINEPLUS_NAMESPACE=engineplus
-export ENGINEPLUS_INGRESS_ENABLED=true
+ENGINEPLUS_SPARK_SERVICEACCOUNT=spark
+ENGINEPLUS_REPO_TAG=engineplus-2.0.1
+ENGINEPLUS_NAMESPACE=engineplus
+ENGINEPLUS_INGRESS_ENABLED=true
 # generate random password to login zeppelin/airflow/jupyter/spark-history-server/spark ui 
 # default login user is admin 
-export ENGINEPLUS_PASSWORD=`cat /dev/urandom | head -n 10 | md5sum | head -c 16`
+ENGINEPLUS_PASSWORD=`cat /dev/urandom | head -n 10 | md5sum | head -c 16`
 # Required variables For Airflow && Jupyter. If you forget it, you can get it in airflow-env of Config Maps in kube-dashboard by typing "AIRFLOW__REST_API_PLUGIN__REST_API_PLUGIN_EXPECTED_HTTP_TOKEN"
-export ENGINEPLUS_AIRFLOW_REST_TOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
-export ENGINEPLUS_JUPYTER_PROXY_SECRETTOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_HOST=""
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PORT=""
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_USER=""
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PASSWORD=""
-export ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_DATEBASE=""
+ENGINEPLUS_AIRFLOW_REST_TOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
+ENGINEPLUS_JUPYTER_PROXY_SECRETTOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_HOST=""
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PORT=""
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_USER=""
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PASSWORD=""
+ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_DATEBASE=""
 ```
 
 ### 2. Execute Engineplus Install Shell
