@@ -1,0 +1,553 @@
+# custom can contain anything you want to pass to the hub pod, as all passed
+# Helm template values will be made available there.
+custom: {}
+
+# imagePullSecret is configuration to create a k8s Secret that Helm chart's pods
+# can get credentials from to pull their images.
+imagePullSecret:
+  create: false
+  automaticReferenceInjection: true
+  registry: ''
+  username: ''
+  email: ''
+  password: ''
+# imagePullSecrets is configuration to reference the k8s Secret resources the
+# Helm chart's pods can get credentials from to pull their images.
+imagePullSecrets: []
+
+
+# hub relates to the hub pod, responsible for running JupyterHub, its configured
+# Authenticator class KubeSpawner, and its configured Proxy class
+# ConfigurableHTTPProxy. KubeSpawner creates the user pods, and
+# ConfigurableHTTPProxy speaks with the actual ConfigurableHTTPProxy server in
+# the proxy pod.
+hub:
+  service:
+    type: ClusterIP
+    annotations: {}
+    ports:
+      nodePort:
+    loadBalancerIP:
+  baseUrl: /
+  cookieSecret:
+  publicURL:
+  initContainers: []
+  fsGid: 65534
+  nodeSelector: {}
+  tolerations: []
+  concurrentSpawnLimit: 64
+  consecutiveFailureLimit: 5
+  activeServerLimit:
+  deploymentStrategy:
+    ## type: Recreate
+    ## - sqlite-pvc backed hubs require the Recreate deployment strategy as a
+    ##   typical PVC storage can only be bound to one pod at the time.
+    ## - JupyterHub isn't designed to support being run in parallell. More work
+    ##   needs to be done in JupyterHub itself for a fully highly available (HA)
+    ##   deployment of JupyterHub on k8s is to be possible.
+    type: Recreate
+  db:
+    type: sqlite-pvc
+    upgrade:
+    pvc:
+      annotations: {}
+      selector: {}
+      accessModes:
+        - ReadWriteOnce
+      storage: 1Gi
+      subPath:
+      storageClassName:
+    url:
+    password:
+  labels: {}
+  annotations: {}
+  command: []
+  args: []
+  extraConfig: 
+    c.Spawner.default_url = "/lab"
+  extraConfigMap: {}
+  extraEnv: 
+    JUPYTER_ENABLE_LAB: '1'
+  extraContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  image:
+    name: ''
+    tag: 'engineplus-1.0.1'
+    pullPolicy: ''
+    pullSecrets: []
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+  containerSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    allowPrivilegeEscalation: false
+  services: {}
+  pdb:
+    enabled: true
+    minAvailable: 1
+  networkPolicy:
+    enabled: true
+    ingress: []
+    ## egress for JupyterHub already includes Kubernetes internal DNS and
+    ## access to the proxy, but can be restricted further, but ensure to allow
+    ## access to the Kubernetes API server that couldn't be pinned ahead of
+    ## time.
+    ##
+    ## ref: https://stackoverflow.com/a/59016417/2220152
+    egress:
+      - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+    interNamespaceAccessLabels: ignore
+    allowedIngressPorts: []
+  allowNamedServers: false
+  namedServerLimitPerUser:
+  authenticatePrometheus:
+  redirectToServer:
+  shutdownOnLogout:
+  templatePaths: []
+  templateVars: {}
+  livenessProbe:
+    enabled: false
+    initialDelaySeconds: 180
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 1
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 0
+    periodSeconds: 2
+    failureThreshold: 3
+    timeoutSeconds: 1
+  existingSecret:
+
+rbac:
+  enabled: true
+
+
+# proxy relates to the proxy pod, the proxy-public service, and the autohttps
+# pod and proxy-http service.
+proxy:
+  secretToken: ''
+  annotations: {}
+  deploymentStrategy:
+    ## type: Recreate
+    ## - JupyterHub's interaction with the CHP proxy becomes a lot more robust
+    ##   with this configuration. To understand this, consider that JupyterHub
+    ##   during startup will interact a lot with the k8s service to reach a
+    ##   ready proxy pod. If the hub pod during a helm upgrade is restarting
+    ##   directly while the proxy pod is making a rolling upgrade, the hub pod
+    ##   could end up running a sequence of interactions with the old proxy pod
+    ##   and finishing up the sequence of interactions with the new proxy pod.
+    ##   As CHP proxy pods carry individual state this is very error prone. One
+    ##   outcome when not using Recreate as a strategy has been that user pods
+    ##   have been deleted by the hub pod because it considered them unreachable
+    ##   as it only configured the old proxy pod but not the new before trying
+    ##   to reach them.
+    type: Recreate
+    ## rollingUpdate:
+    ## - WARNING:
+    ##   This is required to be set explicitly blank! Without it being
+    ##   explicitly blank, k8s will let eventual old values under rollingUpdate
+    ##   remain and then the Deployment becomes invalid and a helm upgrade would
+    ##   fail with an error like this:
+    ##
+    ##     UPGRADE FAILED
+    ##     Error: Deployment.apps "proxy" is invalid: spec.strategy.rollingUpdate: Forbidden: may not be specified when strategy `type` is 'Recreate'
+    ##     Error: UPGRADE FAILED: Deployment.apps "proxy" is invalid: spec.strategy.rollingUpdate: Forbidden: may not be specified when strategy `type` is 'Recreate'
+    rollingUpdate:
+  # service relates to the proxy-public service
+  service:
+    type: LoadBalancer
+    labels: {}
+    annotations: {}
+    nodePorts:
+      http:
+      https:
+    extraPorts: []
+    loadBalancerIP:
+    loadBalancerSourceRanges: []
+  # chp relates to the proxy pod, which is responsible for routing traffic based
+  # on dynamic configuration sent from JupyterHub to CHP's REST API.
+  chp:
+    containerSecurityContext:
+      runAsUser: 65534  # nobody user
+      runAsGroup: 65534 # nobody group
+      allowPrivilegeEscalation: false
+    image:
+      name: ''
+      tag: 'engineplus-1.0.1'
+      pullPolicy: ''
+      pullSecrets: []
+    extraCommandLineFlags: []
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 60
+      periodSeconds: 10
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 0
+      periodSeconds: 2
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+    extraEnv: {}
+    nodeSelector: {}
+    tolerations: []
+    networkPolicy:
+      enabled: true
+      ingress: []
+      egress:
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+      interNamespaceAccessLabels: ignore
+      allowedIngressPorts: [http, https]
+  # traefik relates to the autohttps pod, which is responsible for TLS
+  # termination when proxy.https.type=letsencrypt.
+  traefik:
+    containerSecurityContext:
+      runAsUser: 65534  # nobody user
+      runAsGroup: 65534 # nobody group
+      allowPrivilegeEscalation: false
+    image:
+      name: ''
+      # tag for Traefik should be thoroughly tested before bumping, because it
+      # has been prone to have intermittency issues in the past. See for example
+      # https://github.com/jupyterhub/zero-to-jupyterhub-k8s/pull/1857.
+      tag: 'engineplus-1.0.1' # ref: https://hub.docker.com/_/traefik?tab=tags
+      pullPolicy: ''
+      pullSecrets: []
+    hsts:
+      includeSubdomains: false
+      preload: false
+      maxAge: 15724800 # About 6 months
+    resources: {}
+    extraEnv: {}
+    extraVolumes: []
+    extraVolumeMounts: []
+    extraStaticConfig: {}
+    extraDynamicConfig: {}
+    nodeSelector: {}
+    tolerations: []
+    networkPolicy:
+      enabled: true
+      ingress: []
+      egress:
+        - to:
+            - ipBlock:
+                cidr: 0.0.0.0/0
+      interNamespaceAccessLabels: ignore
+      allowedIngressPorts: [http, https]
+  secretSync:
+    containerSecurityContext:
+      runAsUser: 65534  # nobody user
+      runAsGroup: 65534 # nobody group
+      allowPrivilegeEscalation: false
+    image:
+      name: ''
+      tag: 'engineplus-1.0.1'
+      pullPolicy: ''
+      pullSecrets: []
+    resources: {}
+  labels: {}
+  pdb:
+    enabled: true
+    minAvailable: 1
+  https:
+    enabled: false
+    type: letsencrypt
+    #type: letsencrypt, manual, offload, secret
+    letsencrypt:
+      contactEmail: ''
+      # Specify custom server here (https://acme-staging-v02.api.letsencrypt.org/directory) to hit staging LE
+      acmeServer: https://acme-v02.api.letsencrypt.org/directory
+    manual:
+      key:
+      cert:
+    secret:
+      name: ''
+      key: tls.key
+      crt: tls.crt
+    hosts: []
+
+
+# auth relates to the configuration of JupyterHub's Authenticator class.
+auth:
+  type: dummy
+  whitelist:
+    users: 
+  admin:
+    access: true
+    users: 
+      - admin
+  dummy:
+    password: ""
+  ldap:
+    dn:
+      search: {}
+      user: {}
+    user: {}
+  state:
+    enabled: false
+    cryptoKey:
+
+
+# singleuser relates to the configuration of KubeSpawner which runs in the hub
+# pod, and its spawning of user pods such as jupyter-myusername.
+singleuser:
+  podNameTemplate:
+  extraTolerations: []
+  nodeSelector: {}
+  extraNodeAffinity:
+    required: []
+    preferred: []
+  extraPodAffinity:
+    required: []
+    preferred: []
+  extraPodAntiAffinity:
+    required: []
+    preferred: []
+  networkTools:
+    image:
+      name: ''
+      tag: 'engineplus-1.0.1'
+      pullPolicy: 'Always'
+      pullSecrets: []
+  cloudMetadata:
+    block: false
+    # block set to true will append a privileged initContainer using the
+    # iptables to block the sensitive metadata server at the provided ip.
+    blockWithIptables: true
+    ip: 169.254.169.254
+  networkPolicy:
+    enabled: true
+    ingress: []
+    egress:
+      # Required egress to communicate with the hub and DNS servers will be
+      # augmented to these egress rules.
+      #
+      # This default rule explicitly allows all outbound traffic from singleuser
+      # pods, except to a typical IP used to return metadata that can be used by
+      # someone with malicious intent.
+      - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+              except:
+                - 169.254.169.254/32
+    interNamespaceAccessLabels: ignore
+    allowedIngressPorts: []
+  events: true
+  extraAnnotations: {}
+  extraLabels:
+    hub.jupyter.org/network-access-hub: 'true'
+  extraEnv: 
+    AIRFLOW_HOST: http://airflow-web.default:8080
+    AIRFLOW_S3_SYNC_PATH: ""
+    AIRFLOW_REST_AUTHORIZATION_TOKEN: ""
+    SPARK_LOCAL_HOSTNAME:
+      name: SPARK_LOCAL_HOSTNAME
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+  lifecycleHooks: {}
+  initContainers: []
+  extraContainers: []
+  uid: 1000
+  fsGid: 65534
+  serviceAccountName: hub
+  storage:
+    type: dynamic
+    extraLabels: {}
+    extraVolumes: 
+      - name: config-volume
+        configMap:
+          name: spark-configmap
+          items:
+            - key: spark-defaults.conf
+              path: spark-defaults.conf
+            - key: driver-podTemplate.yaml
+              path: driver-podTemplate.yaml
+            - key: executor-podTemplate.yaml
+              path: executor-podTemplate.yaml 
+    extraVolumeMounts: 
+      - mountPath: /opt/spark/conf
+        name: config-volume
+    static:
+      pvcName:
+      subPath: '{username}'
+    capacity: 10Gi
+    homeMountPath: /home/jovyan
+    dynamic:
+      storageClass:
+      pvcNameTemplate: claim-{username}{servername}
+      volumeNameTemplate: volume-{username}{servername}
+      storageAccessModes: [ReadWriteOnce]
+  image:
+    name: ''
+    tag: ''
+    pullPolicy: 'Always'
+    pullSecrets: []
+  startTimeout: 300
+  cpu:
+    limit:
+    guarantee:
+  memory:
+    limit:
+    guarantee: 5G
+  extraResource:
+    limits: {}
+    guarantees: {}
+  cmd: jupyterhub-singleuser
+  defaultUrl: "/lab"
+  extraPodConfig: {}
+  profileList: []
+
+
+# scheduling relates to the user-scheduler pods and user-placeholder pods.
+scheduling:
+  userScheduler:
+    enabled: true
+    replicas: 2
+    logLevel: 4
+    # plugins ref: https://kubernetes.io/docs/reference/scheduling/config/#scheduling-plugins-1
+    plugins:
+      score:
+        disabled:
+          - name: SelectorSpread
+          - name: TaintToleration
+          - name: PodTopologySpread
+          - name: NodeResourcesBalancedAllocation
+          - name: NodeResourcesLeastAllocated
+          # Disable plugins to be allowed to enable them again with a different
+          # weight and avoid an error.
+          - name: NodePreferAvoidPods
+          - name: NodeAffinity
+          - name: InterPodAffinity
+          - name: ImageLocality
+        enabled:
+          - name: NodePreferAvoidPods
+            weight: 161051
+          - name: NodeAffinity
+            weight: 14631
+          - name: InterPodAffinity
+            weight: 1331
+          - name: NodeResourcesMostAllocated
+            weight: 121
+          - name: ImageLocality
+            weight: 11
+    containerSecurityContext:
+      runAsUser: 65534  # nobody user
+      runAsGroup: 65534 # nobody group
+      allowPrivilegeEscalation: false
+    image:
+      name: ''
+      tag: 'engineplus-1.0.1'
+      pullPolicy: ''
+      pullSecrets: []
+    nodeSelector: {}
+    tolerations: []
+    pdb:
+      enabled: true
+      minAvailable: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+  podPriority:
+    enabled: false
+    globalDefault: false
+    defaultPriority: 0
+    userPlaceholderPriority: -10
+  userPlaceholder:
+    enabled: true
+    replicas: 0
+    containerSecurityContext:
+      runAsUser: 65534  # nobody user
+      runAsGroup: 65534 # nobody group
+      allowPrivilegeEscalation: false
+  corePods:
+    nodeAffinity:
+      matchNodePurpose: prefer
+  userPods:
+    nodeAffinity:
+      matchNodePurpose: prefer
+
+
+# prePuller relates to the hook|continuous-image-puller DaemonsSets
+prePuller:
+  annotations: {}
+  resources:
+    requests:
+      cpu: 0
+      memory: 0
+  containerSecurityContext:
+    runAsUser: 65534  # nobody user
+    runAsGroup: 65534 # nobody group
+    allowPrivilegeEscalation: false
+  # hook relates to the hook-image-awaiter Job and hook-image-puller DaemonSet
+  hook:
+    enabled: true
+    # image and the configuration below relates to the hook-image-awaiter Job
+    image:
+      name: ''
+      tag: 'engineplus-1.0.1'
+      pullPolicy: ''
+      pullSecrets: []
+    containerSecurityContext:
+      runAsUser: 65534  # nobody user
+      runAsGroup: 65534 # nobody group
+      allowPrivilegeEscalation: false
+    podSchedulingWaitDuration: 10
+    nodeSelector: {}
+    tolerations: []
+  continuous:
+    enabled: false
+  pullProfileListImages: true
+  extraImages: {}
+  pause:
+    containerSecurityContext:
+      runAsUser: 65534  # nobody user
+      runAsGroup: 65534 # nobody group
+      allowPrivilegeEscalation: false
+    image:
+      name: ''
+      tag: 'engineplus-1.0.1' # https://console.cloud.google.com/gcr/images/google-containers/GLOBAL/pause?gcrImageListsize=30
+      pullPolicy: ''
+      pullSecrets: []
+
+ingress:
+  enabled: true
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts: []
+  pathSuffix: ''
+  tls: []
+
+cull:
+  enabled: true
+  users: false
+  removeNamedServers: false
+  timeout: 10800
+  every: 600
+  concurrency: 10
+  maxAge: 0
+
+###################################
+# spark-configmap
+###################################
+spark: 
+  namespace:
+    name: jupyter
+  serviceAccount:
+    name: hub
+
+debug:
+  enabled: true

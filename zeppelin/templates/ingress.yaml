@@ -1,0 +1,19 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: zeppelin-server-ingress
+  annotations:
+    {{- range $key, $val := .Values.ingress.annotations }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end }}
+spec:
+  rules:
+    - host: {{ .Values.ingress.hosts }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: zeppelin-server
+              servicePort: 8087
+{{- end }}

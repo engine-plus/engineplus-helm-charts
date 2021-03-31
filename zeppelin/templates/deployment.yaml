@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zeppelin-server
+  labels:
+    app.kubernetes.io/name: zeppelin-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zeppelin-server
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zeppelin-server
+    spec:
+      serviceAccountName: zeppelin-server
+      volumes:
+      - name: zeppelin-server-conf
+        configMap:
+          name: zeppelin-server-conf-map
+          items:
+            - key: shiro.ini
+              path: shiro.ini
+            - key: zeppelin-site.xml
+              path: zeppelin-site.xml
+      containers:
+        - name: zeppelin-server
+          image: {{ .Values.zeppelin.image }}
+          command:
+            - "sh"
+            - "-c"
+            - >
+              cp /tmp/conf/shiro.ini /zeppelin/conf/;
+              cp /tmp/conf/zeppelin-site.xml /zeppelin/conf/;
+              $(ZEPPELIN_HOME)/bin/zeppelin.sh
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "sh"
+                  - "-c"
+                  - >
+                    conf_num=$(aws s3 ls {{ .Values.zeppelin.confStorage }} | wc -l );
+                    if [ ${conf_num} -gt 0 ]; then
+                      aws s3 cp {{ .Values.zeppelin.confStorage }} /zeppelin/conf/ --recursive --exclude "shiro.ini" --exclude "zeppelin-site.xml"
+                    else
+                      aws s3 cp /zeppelin/conf/.  {{ .Values.zeppelin.confStorage }} --recursive
+                    fi
+            preStop:
+              exec:
+                # SIGTERM triggers a quick exit; gracefully terminate instead
+                command:
+                  - "sh"
+                  - "-c"
+                  - >
+                    aws s3 cp /zeppelin/conf/.  {{ .Values.zeppelin.confStorage }} --recursive";
+                    ps -ef | grep org.apache.zeppelin.server.ZeppelinServer | grep -v grep | awk '{print $2}' | xargs kill;
+          ports:
+            - name: http
+              containerPort: 8087
+            - name: https
+              containerPort: 8443
+            - name: rpc
+              containerPort: 12320
+          env:
+            - name: POD_UID
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.uid
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: SPARK_LOCAL_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          envFrom:
+            - configMapRef:
+                name: zeppelin-server-conf-map
+          volumeMounts:
+            - name: zeppelin-server-conf
+              mountPath: /tmp/conf

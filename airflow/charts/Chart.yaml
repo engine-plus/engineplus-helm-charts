@@ -1,0 +1,19 @@
+apiVersion: v1
+appVersion: 1.10.12
+description: airflow is a platform to programmatically author, schedule, and monitor
+  workflows
+home: https://airflow.apache.org/
+icon: https://airflow.apache.org/_images/pin_large.png
+keywords:
+- airflow
+- dag
+- workflow
+maintainers:
+- name: gsemet
+  url: https://github.com/gsemet
+- name: thesuperzapper
+  url: https://github.com/thesuperzapper
+name: airflow
+sources:
+- https://github.com/airflow-helm/charts/tree/main/charts/airflow
+version: 7.16.0

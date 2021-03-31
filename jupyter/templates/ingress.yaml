@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled -}}
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+apiVersion: networking.k8s.io/v1beta1
+{{- else }}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: jupyterhub
+  labels:
+    {{- include "jupyterhub.labels" . | nindent 4 }}
+  {{- if .Values.ingress.annotations }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  rules:
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host | quote }}
+      http:
+        paths:
+          - path: {{ $.Values.hub.baseUrl }}{{ $.Values.ingress.pathSuffix }}
+            backend:
+              serviceName: proxy-public
+              servicePort: 80
+    {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- .Values.ingress.tls | toYaml | trimSuffix "\n" | nindent 4 }}
+  {{- end }}
+{{- end }}

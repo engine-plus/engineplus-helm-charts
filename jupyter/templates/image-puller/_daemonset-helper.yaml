@@ -1,0 +1,161 @@
+{{- /*
+Returns an image-puller daemonset. Two daemonsets will be created like this.
+- hook-image-puller: for pre helm upgrade image pulling (lives temporarily)
+- continuous-image-puller: for newly added nodes image pulling
+*/}}
+{{- define "jupyterhub.imagePuller.daemonset" -}}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ print .componentPrefix "image-puller" }}
+  labels:
+    {{- include "jupyterhub.labels" . | nindent 4 }}
+    {{- if .hook }}
+    hub.jupyter.org/deletable: "true"
+    {{- end }}
+  {{- if .hook }}
+  annotations:
+    {{- /*
+    Allows the daemonset to be deleted when the image-awaiter job is completed.
+    */}}
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "-10"
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "jupyterhub.matchLabels" . | nindent 6 }}
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 100%
+  template:
+    metadata:
+      labels:
+        {{- include "jupyterhub.matchLabels" . | nindent 8 }}
+      {{- with .Values.prePuller.annotations }}
+      annotations:
+        {{- . | toYaml | trimSuffix "\n" | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- /*
+        continuous-image-puller pods are made evictable to save on the k8s pods
+        per node limit all k8s clusters have.
+      */}}
+      {{- if and (not .hook) .Values.scheduling.podPriority.enabled }}
+      priorityClassName: {{ .Release.Name }}-user-placeholder-priority
+      {{- end }}
+      tolerations:
+        {{- include "jupyterhub.userTolerations" . | nindent 8 }}
+      nodeSelector: {{ toJson .Values.singleuser.nodeSelector }}
+      {{- if include "jupyterhub.userNodeAffinityRequired" . }}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              {{- include "jupyterhub.userNodeAffinityRequired" . | nindent 14 }}
+      {{- end }}
+      terminationGracePeriodSeconds: 0
+      automountServiceAccountToken: false
+      {{- with include "jupyterhub.imagePullSecrets" (dict "root" . "image" .Values.singleuser.image) }}
+      imagePullSecrets: {{ . }}
+      {{- end }}
+      initContainers:
+        {{- /* --- Conditionally pull an image all user pods will use in an initContainer --- */}}
+        {{- $blockWithIptables := hasKey .Values.singleuser.cloudMetadata "enabled" | ternary (not .Values.singleuser.cloudMetadata.enabled) .Values.singleuser.cloudMetadata.blockWithIptables }}
+        {{- if $blockWithIptables }}
+        - name: image-pull-metadata-block
+          image: {{ .Values.singleuser.networkTools.image.name }}:{{ .Values.singleuser.networkTools.image.tag }}
+          {{- with .Values.singleuser.networkTools.image.pullPolicy }}
+          imagePullPolicy: {{ . }}
+          {{- end }}
+          command:
+            - /bin/sh
+            - -c
+            - echo "Pulling complete"
+          resources:
+            {{- .Values.prePuller.resources | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- with .Values.prePuller.containerSecurityContext }}
+          securityContext:
+            {{- . | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- end }}
+        {{- end }}
+
+        {{- /* --- Pull default image --- */}}
+        - name: image-pull-singleuser
+          image: {{ .Values.singleuser.image.name }}:{{ .Values.singleuser.image.tag }}
+          command:
+            - /bin/sh
+            - -c
+            - echo "Pulling complete"
+          resources:
+            {{- .Values.prePuller.resources | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- with .Values.prePuller.containerSecurityContext }}
+          securityContext:
+            {{- . | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- end }}
+
+        {{- /* --- Pull extra containers' images --- */}}
+        {{- range $k, $container := .Values.singleuser.extraContainers }}
+        - name: image-pull-singleuser-extra-container-{{ $k }}
+          image: {{ $container.image }}
+          command:
+            - /bin/sh
+            - -c
+            - echo "Pulling complete"
+          resources:
+            {{- $.Values.prePuller.resources | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- with $.Values.prePuller.containerSecurityContext }}
+          securityContext:
+            {{- . | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- end }}
+        {{- end }}
+
+        {{- /* --- Conditionally pull profileList images --- */}}
+        {{- if .Values.prePuller.pullProfileListImages }}
+        {{- range $k, $container := .Values.singleuser.profileList }}
+        {{- if $container.kubespawner_override }}
+        {{- if $container.kubespawner_override.image }}
+        - name: image-pull-singleuser-profilelist-{{ $k }}
+          image: {{ $container.kubespawner_override.image }}
+          command:
+            - /bin/sh
+            - -c
+            - echo "Pulling complete"
+          resources:
+            {{- $.Values.prePuller.resources | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- with $.Values.prePuller.containerSecurityContext }}
+          securityContext:
+            {{- . | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- end }}
+
+        {{- /* --- Pull extra images --- */}}
+        {{- range $k, $v := .Values.prePuller.extraImages }}
+        - name: image-pull-{{ $k }}
+          image: {{ $v.name }}:{{ $v.tag }}
+          command:
+            - /bin/sh
+            - -c
+            - echo "Pulling complete"
+          resources:
+            {{- $.Values.prePuller.resources | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- with $.Values.prePuller.containerSecurityContext }}
+          securityContext:
+            {{- . | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- end }}
+        {{- end }}
+      containers:
+        - name: pause
+          image: {{ .Values.prePuller.pause.image.name }}:{{ .Values.prePuller.pause.image.tag }}
+          resources:
+            {{- .Values.prePuller.resources | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- with .Values.prePuller.pause.containerSecurityContext }}
+          securityContext:
+            {{- . | toYaml | trimSuffix "\n" | nindent 12 }}
+          {{- end }}
+{{- end }}

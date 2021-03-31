@@ -1,0 +1,8 @@
+traefik:v2.3.2
+k8s.gcr.io/pause:3.2
+k8s.gcr.io/kube-scheduler:v1.19.2
+jupyterhub/k8s-hub:0.10.2
+jupyterhub/configurable-http-proxy:4.2.2
+jupyterhub/k8s-secret-sync:0.10.2
+jupyterhub/k8s-image-awaiter:0.10.2
+jupyterhub/k8s-network-tools:0.10.2

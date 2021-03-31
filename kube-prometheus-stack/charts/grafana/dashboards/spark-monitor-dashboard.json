@@ -1,0 +1,1690 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 25,
+    "iteration": 1614857884854,
+    "links": [],
+    "panels": [
+      {
+        "columns": [],
+        "datasource": null,
+        "fontSize": "100%",
+        "gridPos": {
+          "h": 19,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 16,
+        "links": [],
+        "options": {},
+        "pageSize": null,
+        "scroll": true,
+        "showHeader": true,
+        "sort": {
+          "col": 3,
+          "desc": false
+        },
+        "styles": [
+          {
+            "alias": "Time",
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "link": false,
+            "linkTargetBlank": true,
+            "linkTooltip": "",
+            "linkUrl": "",
+            "pattern": "Time",
+            "type": "hidden"
+          },
+          {
+            "alias": "Memory used",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #A",
+            "thresholds": [],
+            "type": "number",
+            "unit": "decbytes"
+          },
+          {
+            "alias": "Memory requested",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #B",
+            "thresholds": [],
+            "type": "number",
+            "unit": "decbytes"
+          },
+          {
+            "alias": "CPUs used",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #C",
+            "thresholds": [],
+            "type": "number",
+            "unit": "none"
+          },
+          {
+            "alias": "CPUs requested",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #D",
+            "thresholds": [],
+            "type": "number",
+            "unit": "short"
+          },
+          {
+            "alias": "# of executor pods",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #E",
+            "thresholds": [],
+            "type": "number",
+            "unit": "short"
+          },
+          {
+            "alias": "Spark job ID",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "link": true,
+            "linkTargetBlank": true,
+            "linkTooltip": "Spark UI",
+            "linkUrl": "http://${__cell_9}:4040/jobs/",
+            "mappingType": 1,
+            "pattern": "label_spark_app_selector",
+            "thresholds": [],
+            "type": "number",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "__name__",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "endpoint",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "instance",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "job",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "pod",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "alias": "Serivice",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "service",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "alias": "Registered",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #F",
+            "thresholds": [],
+            "type": "date",
+            "unit": "dtdurations"
+          },
+          {
+            "alias": "Namespace",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "namespace",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "alias": "Network in",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #G",
+            "thresholds": [],
+            "type": "number",
+            "unit": "decbytes"
+          },
+          {
+            "alias": "Network out",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #H",
+            "thresholds": [],
+            "type": "number",
+            "unit": "decbytes"
+          },
+          {
+            "alias": "Duration",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 1,
+            "mappingType": 1,
+            "pattern": "Value #I",
+            "thresholds": [],
+            "type": "number",
+            "unit": "dtdurations"
+          },
+          {
+            "alias": "Pod IP",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "pod_ip",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value #J",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "decimals": 2,
+            "pattern": "/.*/",
+            "thresholds": [],
+            "type": "number",
+            "unit": "short"
+          }
+        ],
+        "targets": [
+          {
+            "expr": "min(kube_pod_start_time * 1000 \n+ on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \nand on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "refId": "F"
+          },
+          {
+            "expr": "time() - min(kube_pod_start_time \n+ on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \nand on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector)",
+            "format": "table",
+            "instant": true,
+            "intervalFactor": 1,
+            "refId": "I"
+          },
+          {
+            "expr": "count(kube_pod_labels{label_spark_role=\"executor\"} and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector, namespace)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "intervalFactor": 1,
+            "refId": "E"
+          },
+          {
+            "expr": "(sum(\n    sum(label_replace(container_memory_usage_bytes{container_name!=\"\"}, \"pod\", \"$1\", \"pod_name\", \"(.*)\")) by (pod, namespace)\n    + on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (label_spark_app_selector, namespace))",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          },
+          {
+            "expr": "(sum(\n    sum(kube_pod_container_resource_requests_memory_bytes{}) by (pod, namespace) \n    + on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (label_spark_app_selector, namespace))",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "intervalFactor": 1,
+            "refId": "B"
+          },
+          {
+            "expr": "(sum(\n    sum(label_replace(rate(container_cpu_usage_seconds_total{container_name!=\"\"}[1m]), \"pod\", \"$1\", \"pod_name\", \"(.*)\")) by (pod, namespace) \n    + on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (label_spark_app_selector, namespace))",
+            "format": "table",
+            "instant": true,
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "C"
+          },
+          {
+            "expr": "(sum(\n    sum(kube_pod_container_resource_requests_cpu_cores{}) by (pod, namespace) \n    + on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (label_spark_app_selector, namespace))",
+            "format": "table",
+            "instant": true,
+            "intervalFactor": 1,
+            "refId": "D"
+          },
+          {
+            "expr": "(sum(\n    sum(label_replace(rate(container_network_receive_bytes_total{container_name!=\"\"}[1m]), \"pod\", \"$1\", \"pod_name\", \"(.*)\")) by (pod, namespace) \n    + on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (label_spark_app_selector, namespace))",
+            "format": "table",
+            "instant": true,
+            "intervalFactor": 1,
+            "refId": "G"
+          },
+          {
+            "expr": "(sum(\n    sum(label_replace(rate(container_network_transmit_bytes_total{container_name!=\"\"}[1m]), \"pod\", \"$1\", \"pod_name\", \"(.*)\")) by (pod, namespace) \n    + on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (label_spark_app_selector, namespace))",
+            "format": "table",
+            "instant": true,
+            "intervalFactor": 1,
+            "refId": "H"
+          },
+          {
+            "expr": "(sum(count(kube_pod_info) by (pod,pod_ip,namespace) \r\n+ on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"driver\"}) \r\nand on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector, namespace,pod_ip,pod))",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "refId": "J"
+          }
+        ],
+        "title": "Active Spark jobs",
+        "transform": "table",
+        "type": "table"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": false,
+        "colors": [
+          "#299c46",
+          "rgba(237, 129, 40, 0.89)",
+          "#d44a3a"
+        ],
+        "datasource": null,
+        "decimals": 1,
+        "format": "percentunit",
+        "gauge": {
+          "maxValue": 1,
+          "minValue": 0,
+          "show": true,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 0,
+          "y": 19
+        },
+        "id": 8,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(255, 255, 255, 0.18)",
+          "full": false,
+          "lineColor": "rgb(255, 255, 255)",
+          "show": false
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "count(count(kube_pod_info and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1) and on(pod) (kube_pod_labels{label_spark_role=\"executor\"})) by (node)) / count(kube_node_labels and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "refId": "A"
+          }
+        ],
+        "thresholds": "0.5,0.9,1.0",
+        "title": "% of nodes utilized",
+        "type": "singlestat",
+        "valueFontSize": "100%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": null,
+        "format": "percentunit",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 5,
+          "y": 19
+        },
+        "id": 18,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(255, 255, 255, 0.18)",
+          "full": false,
+          "lineColor": "rgb(255, 255, 255)",
+          "show": true
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "sum(\n   (sum(container_memory_usage_bytes{name!=\"\"}) by (pod, namespace))\n   and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n   and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\n/ \nsum(\n   (sum(kube_pod_container_resource_requests_memory_bytes{}) by (pod, namespace))\n   and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n   and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "0.3,0.8",
+        "title": "Memory utilization %",
+        "type": "singlestat",
+        "valueFontSize": "200%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "0",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": null,
+        "format": "percentunit",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 10,
+          "y": 19
+        },
+        "id": 19,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(255, 255, 255, 0.18)",
+          "full": false,
+          "lineColor": "rgb(255, 255, 255)",
+          "show": true
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "(sum(\n    (sum(rate(container_cpu_usage_seconds_total{name!=\"\"}[5m])) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)))\n/ \n(sum(\n    (sum(kube_pod_container_resource_requests_cpu_cores{}) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "refId": "A"
+          }
+        ],
+        "thresholds": "0.3,0.8",
+        "title": "CPU utilization %",
+        "type": "singlestat",
+        "valueFontSize": "200%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "0",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": false,
+        "colors": [
+          "#299c46",
+          "rgba(237, 129, 40, 0.89)",
+          "#d44a3a"
+        ],
+        "datasource": null,
+        "format": "none",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 15,
+          "y": 19
+        },
+        "id": 24,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(255, 255, 255, 0.18)",
+          "full": false,
+          "lineColor": "rgb(255, 255, 255)",
+          "show": true
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "sum(count(kube_pod_labels{label_spark_role=\"driver\"} and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 0)) by (label_spark_app_selector , namespace))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "refId": "A"
+          }
+        ],
+        "thresholds": "",
+        "title": "Finished Driver Before Clean",
+        "type": "singlestat",
+        "valueFontSize": "200%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "0",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": false,
+        "colors": [
+          "#299c46",
+          "rgba(237, 129, 40, 0.89)",
+          "#d44a3a"
+        ],
+        "datasource": null,
+        "format": "none",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 4,
+          "x": 20,
+          "y": 19
+        },
+        "id": 17,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(255, 255, 255, 0.18)",
+          "full": false,
+          "lineColor": "rgb(255, 255, 255)",
+          "show": true
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "sum(count(kube_pod_labels{label_spark_role=\"executor\"} and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector , namespace))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "refId": "A"
+          }
+        ],
+        "thresholds": "",
+        "title": "Running executor pods",
+        "type": "singlestat",
+        "valueFontSize": "200%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "0",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "cacheTimeout": null,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 28
+        },
+        "hiddenSeries": false,
+        "id": 22,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "count(kube_node_labels{label_nodestype=\"spark-applications-nodes\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "task nodes",
+            "refId": "A"
+          },
+          {
+            "expr": "count(kube_node_labels{label_nodestype=\"spark-applications-driver-nodes\"})",
+            "legendFormat": "driver nodes",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Spark Nodes",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "cacheTimeout": null,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 28
+        },
+        "hiddenSeries": false,
+        "id": 10,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "count(count(kube_pod_labels{label_spark_role=\"executor\"} and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "current jobs",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Running Spark jobs",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "datasource": null,
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 37
+        },
+        "id": 23,
+        "links": [],
+        "options": {
+          "displayMode": "gradient",
+          "fieldOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "defaults": {
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 7200
+                }
+              ],
+              "unit": "dtdurations"
+            },
+            "override": {},
+            "values": false
+          },
+          "orientation": "horizontal"
+        },
+        "pluginVersion": "6.5.2",
+        "targets": [
+          {
+            "expr": "time() - min(kube_pod_start_time \n+ on(pod) group_left(label_spark_app_selector) (0 * kube_pod_labels{label_spark_role=\"executor\"}) \nand on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector)",
+            "format": "time_series",
+            "instant": true,
+            "intervalFactor": 1,
+            "legendFormat": "{{ label_spark_app_selector }}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Spark Application Durations",
+        "type": "bargauge"
+      },
+      {
+        "aliasColors": {},
+        "bars": true,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "decimals": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 37
+        },
+        "hiddenSeries": false,
+        "hideTimeOverride": false,
+        "id": 21,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "hideZero": false,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sideWidth": 200,
+          "sort": "current",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": false,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "Running",
+            "color": "#3f6833"
+          },
+          {
+            "alias": "Pending",
+            "color": "#cca300"
+          },
+          {
+            "alias": "Failed",
+            "color": "rgb(172, 46, 26)"
+          },
+          {
+            "alias": "Succeeded",
+            "color": "#508642"
+          },
+          {
+            "alias": "Unknown",
+            "color": "#1f78c1"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sort_desc(sum(kube_pod_status_phase and on (pod) kube_pod_labels{label_spark_role=\"executor\"} and on(pod) (kube_pod_created >= (time() - $__range_s))) by (phase))",
+            "format": "time_series",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "{{ phase }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": "1h",
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Recent pod state counts",
+        "tooltip": {
+          "shared": false,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "series",
+          "name": null,
+          "show": true,
+          "values": [
+            "total"
+          ]
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "decimals": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 46
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sideWidth": 400,
+          "sort": "current",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "count(kube_pod_labels{label_spark_role=\"executor\"} and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) by (label_spark_app_selector , namespace)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{ namespace }}, {{ label_spark_app_selector }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "# of executors",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 54
+        },
+        "hiddenSeries": false,
+        "id": 12,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sideWidth": 400,
+          "sort": "current",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {}
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "(sum(\n    (sum(container_memory_usage_bytes{name!=\"\"}) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (namespace) /1024 / 1024 / 1024) \n/ \n(sum(\n    (sum(kube_pod_container_resource_requests_memory_bytes{}) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1)) \nby (namespace) / 1024 / 1024 / 1024)",
+            "format": "time_series",
+            "hide": false,
+            "intervalFactor": 1,
+            "legendFormat": "{{ namespace }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Memory utilization %",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "decimals": 2,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 64
+        },
+        "hiddenSeries": false,
+        "id": 15,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "hideZero": false,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sideWidth": 400,
+          "sort": "current",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "(sum(\n    (sum(rate(container_cpu_usage_seconds_total{name!=\"\"}[1m])) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (namespace))\n/ \n(sum(\n    (sum(kube_pod_container_resource_requests_cpu_cores{}) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (namespace))",
+            "format": "time_series",
+            "hide": false,
+            "intervalFactor": 1,
+            "legendFormat": "{{ namespace }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "CPU utilization %",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "decimals": 2,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 74
+        },
+        "hiddenSeries": false,
+        "id": 20,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sideWidth": 400,
+          "sort": "current",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "(sum(\n    (sum(rate(container_network_receive_bytes_total{name!=\"\"}[1m])) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (namespace))",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "IN {{ namespace }}",
+            "refId": "A"
+          },
+          {
+            "expr": "- (sum(\n    (sum(rate(container_network_transmit_bytes_total{name!=\"\"}[1m])) by (pod, namespace))\n    and on(pod) kube_pod_labels{label_spark_role=\"executor\"} \n    and on(pod) (kube_pod_status_phase{phase=\"Running\"} == 1))\nby (namespace))",
+            "format": "time_series",
+            "hide": false,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "OUT {{ namespace }}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Network I/O pressure",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": null,
+            "format": "Bps",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": 0
+        }
+      }
+    ],
+    "refresh": "5m",
+    "schemaVersion": 21,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "text": "spark-history.prd-k8s.chrissng.net",
+            "value": "spark-history.prd-k8s.chrissng.net"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "spark_ui_domain",
+          "options": [
+            {
+              "selected": true,
+              "text": "spark-history.prd-k8s.chrissng.net",
+              "value": "spark-history.prd-k8s.chrissng.net"
+            }
+          ],
+          "query": "spark-history.prd-k8s.chrissng.net",
+          "skipUrlSync": false,
+          "type": "constant"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Spark On K8S Monitor",
+    "uid": "KGn1ZKiZz",
+    "version": 7
+  }

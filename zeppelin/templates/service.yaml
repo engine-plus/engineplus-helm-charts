@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: zeppelin-server
+spec:
+  ports:
+    - name: http
+      port: 8087
+    - name: rpc            # port name is referenced in the code. So it shouldn't be changed.
+      port: 12320
+  selector:
+    app.kubernetes.io/name: zeppelin-server
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: zeppelin-server

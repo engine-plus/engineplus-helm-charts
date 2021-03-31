@@ -1,0 +1,99 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: CLUSTER-NAME
+  region: us-east-1
+
+vpc:
+  id: "vpc-id"
+  cidr: "172.31.0.0/16"
+  subnets:
+    public:
+      us-east-1b:
+          id: "subnet-id"
+          cidr: "172.31.32.0/20"
+      us-east-1a:
+          id: "subnet-id"
+          cidr: "172.31.16.0/20"
+iam:
+  serviceRoleARN: "arn:aws:iam::ACCOUNT-NUMBER:role/ROLE-NAME"
+
+nodeGroups:
+  - name: spark-applications-driver-nodes-v1
+    labels: { nodestype: spark-applications-driver-nodes }
+    instanceType: m5d.4xlarge
+    availabilityZones: ['us-east-1a']
+    desiredCapacity: 3
+    minSize: 3
+    maxSize: 3
+    volumeSize: 500
+    volumeType: gp2
+    kubeletExtraConfig:
+      kubeReserved:
+          cpu: "300m"
+          memory: "2000Mi"
+          ephemeral-storage: "1Gi"
+      kubeReservedCgroup: "/kube-reserved"
+      systemReserved:
+          cpu: "300m"
+          memory: "2000Mi"
+          ephemeral-storage: "1Gi"
+      evictionHard:
+          memory.available:  "2000Mi"
+          nodefs.available: "10%"
+      featureGates:
+          DynamicKubeletConfig: true
+          RotateKubeletServerCertificate: true
+    iam:
+      instanceProfileARN: "arn:aws:iam::ACCOUNT-NUMBER:instance-profile/PROFILE-NAME"
+      instanceRoleARN: "arn:aws:iam::ACCOUNT-NUMBER:role/ROLE-NAME"
+    ssh:
+      publicKeyName: 'KEY-NAME'
+    tags:
+      'k8s.io/cluster-autoscaler/CLUSTER-NAME': 'owned'
+      'k8s.io/cluster-autoscaler/enabled': 'true' 
+    preBootstrapCommands:
+        - "yum install -y mdadm.x86_64"
+        - "mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/nvme2n1 /dev/nvme1n1"
+        - "mkfs.xfs -f /dev/md0"
+        - "mount -t xfs -o noatime /dev/md0 /mnt"
+        - "chmod -R 0777 /mnt"
+  - name: spark-applications-nodes-v1
+    labels: { nodestype: spark-applications-nodes }
+    instanceType: m5d.4xlarge
+    availabilityZones: ['us-east-1a']
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 150
+    volumeSize: 50
+    volumeType: gp2
+    kubeletExtraConfig:
+      kubeReserved:
+          cpu: "300m"
+          memory: "2000Mi"
+          ephemeral-storage: "1Gi"
+      kubeReservedCgroup: "/kube-reserved"
+      systemReserved:
+          cpu: "300m"
+          memory: "2000Mi"
+          ephemeral-storage: "1Gi"
+      evictionHard:
+          memory.available:  "2000Mi"
+          nodefs.available: "10%"
+      featureGates:
+          DynamicKubeletConfig: true
+          RotateKubeletServerCertificate: true
+    iam:
+      instanceProfileARN: "arn:aws:iam::ACCOUNT-NUMBER:instance-profile/PROFILE-NAME"
+      instanceRoleARN: "arn:aws:iam::ACCOUNT-NUMBER:role/ROLE-NAME"
+    ssh:
+      publicKeyName: 'KEY-NAME'
+    tags:
+      'k8s.io/cluster-autoscaler/CLUSTER-NAME': 'owned'
+      'k8s.io/cluster-autoscaler/enabled': 'true' 
+    preBootstrapCommands:
+        - "yum install -y mdadm.x86_64"
+        - "mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/nvme2n1 /dev/nvme1n1"
+        - "mkfs.xfs -f /dev/md0"
+        - "mount -t xfs -o noatime /dev/md0 /mnt"
+        - "chmod -R 0777 /mnt"

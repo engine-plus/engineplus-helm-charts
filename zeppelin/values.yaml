@@ -1,0 +1,31 @@
+# Default values for zeppelin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+zeppelin:
+  image: xxxxxx.amazonaws.com/xxxxxx/zeppelin:v.xx
+  password: zeppelin123
+  # notebook save path (s3)
+  noteBookS3Bucket: home
+  noteBookS3User: zeppelin/notebook
+  confStorage: s3://home/xxx/zeppelin/conf/
+
+spark:
+  image: xxxxxxx.amazonaws.com/xxxxx/spark:v.xx
+
+ingress:
+  enabled: true
+  suffix: xxxxx.com
+  annotations: 
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  path: /
+  hosts: zeppelin.xxxxx.com
+  tls: []
+
+service:
+  type: ClusterIP
+
+nodeSelector: {}

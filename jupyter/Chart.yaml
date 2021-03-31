@@ -1,0 +1,15 @@
+apiVersion: v1
+appVersion: 1.2.1
+description: Multi-user Jupyter installation
+home: https://z2jh.jupyter.org
+icon: https://jupyter.org/assets/hublogo.svg
+kubeVersion: '>=1.11.0-0'
+maintainers:
+- email: erik@sundellopensource.se
+  name: Erik Sundell
+- name: Simon Li
+  url: https://github.com/manics/
+name: jupyterhub
+sources:
+- https://github.com/jupyterhub/zero-to-jupyterhub-k8s
+version: 0.10.2
