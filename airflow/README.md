@@ -7,7 +7,7 @@ Airflow is a platform to programmatically author, schedule, and monitor workflow
 Two ways to install Airflow: execute ``sh install_all.sh`` in  parent directory **or** install separately by using following steps.
 
 1. RDS Mysql database should be already created. Click this [how to create a RDS](https://aws.amazon.com/rds/?nc1=h_ls).
-2. **Prepare ENV Vars**. Before installation, envs should be declared from parent directory, refer to [Prepare ENV Vars](../README.md).
+2. **Prepare environment variables**. Before installation, envs should be declared from parent directory, refer to [Prepare environment variables](../README.md).
 3. Execute the install following command.
 
 ```bash
@@ -46,7 +46,7 @@ helm uninstall airflow -n ${ENGINEPLUS_NAMESPACE}
 
 ## Upgrade Airflow
 
- Before install Jupyter, ensure the ['Prepare ENV Vars'](../README.md) from parent directory has been declared.
+ Before install Jupyter, ensure the ['Prepare environment variables'](../README.md) from parent directory has been declared.
 
 ```bash
 helm upgrade airflow ./airflow/charts \

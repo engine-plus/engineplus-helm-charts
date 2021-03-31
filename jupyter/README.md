@@ -6,7 +6,7 @@ This repo contains a Helm chart for JupyterHub and a guide to use it. Together t
 Two ways to install Jupyter: execute ``sh install_all.sh`` in parent directory **or** install separately by using following steps.
 
 
-1. **Prepare ENV Vars**. Before installation, envs should be declared from parent directory, refer to [Prepare ENV Vars](../README.md) .
+1. **Prepare environment variables**. Before installation, envs should be declared from parent directory, refer to [Prepare environment variables](../README.md) .
 2. Execute the install following command.
 
 ```bash
@@ -42,7 +42,7 @@ helm uninstall jupyter -n ${ENGINEPLUS_NAMESPACE}
 
 ## Upgrade JupyterHub
 
- Before install Jupyter, ensure the ['Prepare ENV Vars'](../README.md) from parent directory has been declared.
+ Before install Jupyter, ensure the ['Prepare environment variables'](../README.md) from parent directory has been declared.
 
 ```
 helm upgrade --cleanup-on-fail jupyter ./jupyter \
