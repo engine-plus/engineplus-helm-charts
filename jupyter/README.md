@@ -1,9 +1,9 @@
-# Jupyter
+# JupyterHub
 
 This repo contains a Helm chart for JupyterHub and a guide to use it. Together they allow you to make a JupyterHub available to a very large group of users such as the staff and students of a university.
 
-## Install Jupyter
-Two ways to install Jupyter: execute ``sh install_all.sh`` in parent directory **or** install separately by using following steps.
+## Install JupyterHub
+Two ways to install JupyterHub: execute ``sh install_all.sh`` in parent directory **or** install separately by using following steps.
 
 
 1. **Prepare environment variables**. Before installation, envs should be declared from parent directory, refer to [Prepare environment variables](../README.md) .
@@ -42,7 +42,7 @@ helm uninstall jupyter -n ${ENGINEPLUS_NAMESPACE}
 
 ## Upgrade JupyterHub
 
- Before install Jupyter, ensure the ['Prepare environment variables'](../README.md) from parent directory has been declared.
+ Before install JupyterHub, ensure the ['Prepare environment variables'](../README.md) from parent directory has been declared.
 
 ```
 helm upgrade --cleanup-on-fail jupyter ./jupyter \
@@ -69,7 +69,7 @@ helm upgrade --cleanup-on-fail jupyter ./jupyter \
 
 ## Demo
 
-### Submit Pyspark to airflow
+### Submit Pyspark to airflow by using Jupyter Notebook
 ```python
 
 import mindalpha.experiment as ma_exp
@@ -109,16 +109,7 @@ experiment.submit_backfill()
 ```
 
 
-## Add Airflow users
+## Add JupyterHub users
 
-1. You can add new user by editing ``auth.whitelist.users`` in the values.yaml.
-
-```bash
-# auth relates to the configuration of JupyterHub's Authenticator class.
-auth:
-  type: dummy
-  whitelist:
-    - user1
-    - user2
-```
-2. update the chart. Refer to ``Upgrade JupyterHub``.
+You can add new user by editing ``JupyterHub Interface`` by replacing /lab with /tree in your Web URL.
+The guide is complemented well by the [JupyterHub Documentation](https://tljh.jupyter.org/en/latest/howto/admin/admin-users.html#adding-admin-users-from-the-jupyterhub-interface)
