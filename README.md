@@ -2,7 +2,7 @@
 
 ## Introduction
 
-[EnginePlus 2.0](aws-market-place-link) is a cloud native big data analytics stack that can be easily deployed, operated and scaled on the cloud with a [Kubernetes(K8s)](https://github.com/kubernetes/kubernetes) cluster to suit your workload demand.
+[EnginePlus 2.0](https://aws.amazon.com/marketplace/pp/B08YMV3TV5) is a cloud native big data analytics stack that can be easily deployed, operated and scaled on the cloud with a [Kubernetes(K8s)](https://github.com/kubernetes/kubernetes) cluster to suit your workload demand.
 
 EnginePlus 2.0 includes the following compoments:
 - Spark on K8S
@@ -22,7 +22,7 @@ This project provides installation method for every component of EnginePlus 2.0 
 
 ## Prerequisites
 1. A Kubernetes cluster. [AWS EKS](https://aws.amazon.com/eks/) has been throughly tested and therefore recommended. Kubenetes version 1.18 or above is required.
-1. Container images of the components you need to install. The prebuilt [EnginePlus 2.0 Container Product on AWS Marketplace](aws-market-place-link) which includes all the component images is recommended. These prebuilt images have all the dependencies and execution environment inside, and help you handle the interaction with EKS, create necessary config maps and include many bug fixes for the opensource projects. Please make sure that you have the [right to subscribe the product](https://docs.aws.amazon.com/marketplace/latest/buyerguide/buyer-finding-and-subscribing-to-container-products.html).
+1. Container images of the components you need to install. The prebuilt [EnginePlus 2.0 Container Product on AWS Marketplace](https://aws.amazon.com/marketplace/pp/B08YMV3TV5) which includes all the component images is recommended. These prebuilt images have all the dependencies and execution environment inside, and help you handle the interaction with EKS, create necessary config maps and include many bug fixes for the opensource projects. Please make sure that you have the [right to subscribe the product](https://docs.aws.amazon.com/marketplace/latest/buyerguide/buyer-finding-and-subscribing-to-container-products.html).
 
 ## Prepare Your K8s(EKS) Cluster
 1. Spark on K8s requires two extra node groups with node labels: `spark-applications-driver-nodes` and `spark-applications-nodes`. If you are using AWS EKS, you could use [eksctl](https://eksctl.io/) to create them following the steps: [create eks node groups](aws-eks-nodegroups).
