@@ -11,7 +11,7 @@ kubectl create namespace monitoring
 helm install prometheus-stack ./kube-prometheus-stack -n monitoring \
              --set grafana.enabled=true \ 
              --set grafana.adminPassword=${ENGINEPLUS_PASSWORD} \
-             --set grafana.ingress=${ENGINEPLUS_INGRESS_ENABLED}   \
+             --set grafana.ingress.enabled=${ENGINEPLUS_INGRESS_ENABLED} \
              --set grafana.ingress.hosts={grafana.${ENGINEPLUS_INGRESS_HOST}}
 
 ```

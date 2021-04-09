@@ -30,7 +30,8 @@ environment:
   # SPARK_DAEMON_CLASSPATH: ...
   # SPARK_PUBLIC_DNS: ...
 
-podAnnotations: {}
+podAnnotations:
+   cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious

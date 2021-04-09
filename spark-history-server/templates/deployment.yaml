@@ -45,6 +45,23 @@ spec:
           value: {{ .Values.hdfs.HADOOP_CONF_DIR }}
         - name: SPARK_NO_DAEMONIZE
           value: "true"
+        {{- if (not .Values.s3.enableIAM) }}
+        - name: AWS_ENDPOINT
+          valueFrom:
+           secretKeyRef:
+             name: aws-secret
+             key: aws_endpoint
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: aws_access_key_id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-secret
+              key: aws_secret_access_key
+        {{- end }}
         ports:
         - name: historyport
           containerPort: 18080
@@ -126,6 +143,8 @@ spec:
         volumeMounts:
         - name: secrets-volume
           mountPath: /etc/secrets
+        - name: config-volume
+          mountPath: /opt/spark/conf
         {{- end }}
         {{- else if .Values.wasbs.enableWASBS }}
         volumeMounts:
@@ -158,6 +177,12 @@ spec:
       - name: secrets-volume
         secret:
           secretName: {{ .Values.s3.secret }}
+      - name: config-volume
+        configMap:
+          name: spark-configmap
+          items:
+            - key: spark-defaults.conf
+              path: spark-defaults.conf
       {{- end }}
       {{- else if .Values.wasbs.enableWASBS }}
       volumes:
