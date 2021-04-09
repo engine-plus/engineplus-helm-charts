@@ -21,6 +21,7 @@ ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PORT=3306
 ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_USER="YOUR_RDS_USER_NAME"
 ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_PASSWORD="YOUR_RDS_PASSWORD"
 ENGINEPLUS_AIRFLOW_DB_RDS_MYSQL_DATEBASE="YOUR_RDS_DATABASE_FOR_AIRFLOW"
+ENGINEPLUS_AIRFLOW_TIMEZONE="UTC"
 
 . ./init/init.sh
 
@@ -67,8 +68,8 @@ helm upgrade jupyter --install ./jupyter \
     --set proxy.secretSync.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-k8s-secret-sync \
     --set proxy.chp.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-configurable-http-proxy \
     --set proxy.traefik.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-traefik \
-    --set scheduling.userScheduler.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-kube-scheduler
-
+    --set scheduling.userScheduler.image.name=${ENGINEPLUS_REPO_PREFIX}/jupyterhub-kube-scheduler \
+    --wait --timeout 10m
 
 # install spark-history
 helm install spark-history-server ./spark-history-server \

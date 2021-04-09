@@ -1,33 +1,13 @@
-# Jupyter
+# JupyterHub
 
 This repo contains a Helm chart for JupyterHub and a guide to use it. Together they allow you to make a JupyterHub available to a very large group of users such as the staff and students of a university.
 
-## Install Jupyter
-Two ways to install Jupyter: execute ``sh install_all.sh`` in engineplus-helm-charts dir or install Jupyter separately by using following commands.
+## Install JupyterHub
+Two ways to install JupyterHub: execute ``sh install_all.sh`` in parent directory **or** install separately by using following steps.
 
 
-1. ``Prepare env``. Before install Jupyter, ensure the ['Prepare ENV Vars'](../README.md) has been declared. You can refer to the README of engineplus-helm-charts.
-
-Here is copy from the README of engineplus-helm-charts.(note: ENGINEPLUS_AIRFLOW_REST_TOKEN must be same with airflow's ENGINEPLUS_AIRFLOW_REST_TOKEN)
-```bash
-# Public variables for all components 
-# Please use your own values
-export ENGINEPLUS_REPO_PREFIX="SUBSCRIBE_IMAGE_URL"
-export ENGINEPLUS_INGRESS_HOST=example.com
-export ENGINEPLUS_S3_PREFIX=s3://xxxxx/engineplus
-export ENGINEPLUS_ROLE_ARN=arn:aws:iam::ACCOUNT-NUMBER:role/IAM-ROLE-NAME
-export ENGINEPLUS_SPARK_SERVICEACCOUNT=spark
-export ENGINEPLUS_REPO_TAG=engineplus-2.0.1
-export ENGINEPLUS_NAMESPACE=engineplus
-export ENGINEPLUS_INGRESS_ENABLED=true
-# generate random password to login zeppelin/airflow/jupyter/spark-history-server/spark ui 
-# default login user is admin 
-export ENGINEPLUS_PASSWORD="YOUR_ADMIN_PASSWORD"
-# Required variables For Airflow && Jupyter. If you forget it, you can get it in airflow-env of Config Maps in kube-dashboard by typing "AIRFLOW__REST_API_PLUGIN__REST_API_PLUGIN_EXPECTED_HTTP_TOKEN"
-export ENGINEPLUS_AIRFLOW_REST_TOKEN="YOUR_ENGINEPLUS_AIRFLOW_REST_TOKEN"
-export ENGINEPLUS_JUPYTER_PROXY_SECRETTOKEN=$(cat /dev/urandom | head -n 10 | md5sum | head -c 32)
-```
-2. execute the install command
+1. **Prepare environment variables**. Before installation, envs should be declared from parent directory, refer to [Prepare environment variables](../README.md) .
+2. Execute the install following command.
 
 ```bash
 helm upgrade jupyter --install ./jupyter \
@@ -55,8 +35,6 @@ helm upgrade jupyter --install ./jupyter \
 ## Uninstall JupyterHub
 
 Uninstall JupyterHub Release.
-
-
 ```
 helm uninstall jupyter -n ${ENGINEPLUS_NAMESPACE}
 
@@ -64,8 +42,7 @@ helm uninstall jupyter -n ${ENGINEPLUS_NAMESPACE}
 
 ## Upgrade JupyterHub
 
-Before upgrade JupyterHub Release, it also needed to ``Prepare env``.
-Then execute the following command. 
+ Before install JupyterHub, ensure the ['Prepare environment variables'](../README.md) from parent directory has been declared.
 
 ```
 helm upgrade --cleanup-on-fail jupyter ./jupyter \
@@ -92,7 +69,7 @@ helm upgrade --cleanup-on-fail jupyter ./jupyter \
 
 ## Demo
 
-### Submit Pyspark to airflow
+### Submit Pyspark to airflow by using Jupyter Notebook
 ```python
 
 import mindalpha.experiment as ma_exp
@@ -132,16 +109,7 @@ experiment.submit_backfill()
 ```
 
 
-## Add Airflow users
+## Add JupyterHub users
 
-1. You can add new user by editing ``auth.whitelist.users`` in the values.yaml.
-
-```bash
-# auth relates to the configuration of JupyterHub's Authenticator class.
-auth:
-  type: dummy
-  whitelist:
-    - user1
-    - user2
-```
-2. update the chart. Refer to ``Upgrade JupyterHub``.
+You can add new user by editing ``JupyterHub Interface`` by replacing /lab with /tree in your Web URL.
+The guide is complemented well by the [JupyterHub Documentation](https://tljh.jupyter.org/en/latest/howto/admin/admin-users.html#adding-admin-users-from-the-jupyterhub-interface)
