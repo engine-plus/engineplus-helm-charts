@@ -177,7 +177,7 @@ ENGINEPLUS_S3_PREFIX=s3://<xxxxx>/engineplus
 ENGINEPLUS_ROLE_ARN=arn:aws:iam::<ACCOUNT-NUMBER>:role/<IAM-ROLE-NAME>
 
 ENGINEPLUS_SPARK_SERVICEACCOUNT=spark
-ENGINEPLUS_REPO_TAG=engineplus-2.0.1
+ENGINEPLUS_REPO_TAG=engineplus-2.0.2
 ENGINEPLUS_NAMESPACE=engineplus
 ENGINEPLUS_INGRESS_ENABLED=true
 # generate random password to login zeppelin/airflow/jupyter/spark-history-server/spark ui 
